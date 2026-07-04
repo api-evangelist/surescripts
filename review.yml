@@ -1,0 +1,100 @@
+aid: surescripts
+name: Surescripts
+review:
+  question: Does Surescripts expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-04'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Surescripts does not publish any public
+    API - WebSocket or otherwise. Surescripts is a health information network
+    operator, not a developer platform. Its transaction exchange rides on
+    industry EDI-style standards (NCPDP SCRIPT, NCPDP Telecommunication, NCPDP
+    RTPB, X12 270/271 and 278, and the Direct secure messaging protocol) carried
+    between certified participants over the network's own transport. There is no
+    documented server-push (ws:// or wss:// or SSE) endpoint on any Surescripts
+    public API to model, so no AsyncAPI was created.
+findings:
+  summary: |
+    Surescripts does not publish a documented public WebSocket API, and does not
+    publish a public REST API or a self-serve developer portal at all. Surescripts
+    operates the largest health information network in the United States - the
+    plumbing behind e-prescribing, medication history, eligibility and formulary,
+    real-time prescription benefit, electronic prior authorization, clinical direct
+    messaging, and record location. Access is not open: an organization must either
+    complete Surescripts certification (conformance testing against current NCPDP
+    standards, plus a DEA third-party audit for EPCS) or integrate through an
+    already-certified EHR, pharmacy system, or middleware partner. Message exchange
+    uses published industry standards (NCPDP SCRIPT, NCPDP RTPB, X12, Direct), not a
+    proprietary public REST or WebSocket surface. No realtime, bidirectional, or
+    streaming WebSocket endpoint is documented anywhere in Surescripts' public
+    materials as of the review date.
+  openSource: |
+    None. Surescripts is a closed, commercial, certification-gated network. The
+    underlying transaction standards (NCPDP SCRIPT, NCPDP RTPB, X12) are published
+    by standards bodies (NCPDP, X12) and are themselves copyrighted and often
+    membership-gated, but Surescripts publishes no open-source client, SDK, or
+    specification of its own.
+  accessModel:
+    publicDeveloperPortal: false
+    selfServeApiKeys: false
+    publicOpenAPI: false
+    certificationRequired: true
+    middlewarePathTypical: true
+    note: |
+      No developer.surescripts.com onboarding exists. Direct participation requires
+      Surescripts certification; most software vendors instead connect through a
+      certified EHR/pharmacy/middleware partner.
+  standards:
+    - NCPDP SCRIPT (NewRx, RxRenewal, RxChange, RxTransfer, RxFill, CancelRx, NewRxRequest, ePA transaction set)
+    - NCPDP Telecommunication
+    - NCPDP Real-Time Prescription Benefit (RTPB)
+    - NCPDP Formulary and Benefit
+    - X12 270/271 (eligibility) and 278 (prior authorization)
+    - Direct secure messaging protocol (Clinical Direct Messaging)
+  transports:
+    - protocol: REST
+      scheme: https
+      documented: false
+      note: No public REST API or reference is published by Surescripts.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in Surescripts' public materials as of the review date.
+    - protocol: EDI / standards-based network exchange
+      scheme: n/a
+      documented: partial
+      note: >
+        Transactions ride on NCPDP SCRIPT, NCPDP RTPB, X12, and Direct between
+        certified participants. The standards are published by NCPDP/X12; the
+        network's own endpoints are not publicly documented.
+  endpointsModeled: true
+  endpointsConfirmedRest: []
+sources:
+  - url: https://surescripts.com/what-we-do
+    type: Documentation
+    note: Overview of Surescripts network solutions (e-prescribing, medication history, eligibility, ePA, RTPB, clinical direct messaging, record locator). No API details.
+  - url: https://surescripts.com/what-we-do/e-prescribing
+    type: Documentation
+    note: E-prescribing service; lists supported NCPDP SCRIPT transactions (NewRx, RxChange, RxRenewal, RxTransfer, RxFill, CancelRx, NewRxRequest). Emphasizes NCPDP certification.
+  - url: https://surescripts.com/prior-authorization-portal-resources
+    type: Documentation
+    note: Prior authorization resources; ePA over NCPDP SCRIPT.
+  - url: https://surescripts.com/why-surescripts/certifications-and-accreditations
+    type: Documentation
+    note: Certifications and accreditations - evidence of the certification-gated access model.
+  - url: https://surescripts.com/GetSCRIPT
+    type: Documentation
+    note: NCPDP SCRIPT version upgrade guidance (current standard versions).
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. More broadly, Surescripts exposes no
+    public API of any kind - access is certification-gated and standards-based
+    (NCPDP SCRIPT, RTPB, X12, Direct) rather than a documented public REST or
+    WebSocket surface. The apis.yml entry models the network's logical services
+    honestly with endpointsModeled: true and asserts no fabricated endpoints,
+    OpenAPI, plans, rate limits, or FinOps artifacts. No AsyncAPI document was
+    created because there is no server-push transport on a Surescripts public API.

@@ -1,0 +1,159 @@
+aid: surescripts
+url: https://raw.githubusercontent.com/api-evangelist/surescripts/refs/heads/main/apis.yml
+name: Surescripts
+kind: company
+description: Surescripts operates the largest health information network in the United
+  States, connecting prescribers, pharmacies, pharmacy benefit managers (PBMs), health
+  plans, and health systems for e-prescribing, medication history, benefit and eligibility
+  verification, electronic prior authorization, and clinical interoperability. Surescripts
+  is a network operator rather than a public API provider - its transaction services
+  run over NCPDP SCRIPT (NewRx, RxRenewal, RxChange, RxTransfer, RxFill, CancelRx),
+  NCPDP Telecommunication, and X12 (270/271 eligibility, 278 prior authorization)
+  standards. There is no self-serve developer portal, no published OpenAPI, and no
+  free API keys; access is gated behind a Surescripts certification process (conformance
+  testing against current NCPDP standards, plus DEA third-party audit for EPCS) or
+  through a certified middleware/EHR partner. The service surfaces below are honestly
+  modeled from Surescripts' published solution descriptions and the underlying NCPDP/X12
+  transaction standards - endpoints are not publicly documented.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Healthcare
+- E-Prescribing
+- Health Information Network
+- NCPDP SCRIPT
+- Medication History
+- Prior Authorization
+- Interoperability
+- Gated
+created: '2026-07-04'
+modified: '2026-07-04'
+specificationVersion: '0.19'
+apis:
+- aid: surescripts:surescripts-e-prescribing-api
+  name: Surescripts E-Prescribing
+  tags:
+  - E-Prescribing
+  - NCPDP SCRIPT
+  - NewRx
+  - CancelRx
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://surescripts.com/what-we-do/e-prescribing
+  endpointsModeled: true
+  properties:
+  - url: https://surescripts.com/what-we-do/e-prescribing
+    type: Documentation
+  description: Routes electronic prescriptions between prescribers and pharmacies over
+    the NCPDP SCRIPT standard, supporting NewRx, RxRenewal, RxChange, RxTransfer, RxFill,
+    CancelRx, and NewRxRequest transactions, plus Electronic Prescribing for Controlled
+    Substances (EPCS). Delivered via certified EHR and pharmacy system integrations,
+    not a public REST endpoint - transactions are modeled from the NCPDP SCRIPT standard.
+- aid: surescripts:surescripts-medication-history-api
+  name: Surescripts Medication History
+  tags:
+  - Medication History
+  - Medication Reconciliation
+  - NCPDP
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://surescripts.com/what-we-do
+  endpointsModeled: true
+  properties:
+  - url: https://surescripts.com/what-we-do
+    type: Documentation
+  description: Returns a patient's fills and claims-based medication history aggregated
+    across pharmacies and PBMs to support medication reconciliation at the point of
+    care. Exchanged as NCPDP medication history request/response transactions through
+    certified participants - not a publicly documented API surface.
+- aid: surescripts:surescripts-eligibility-formulary-api
+  name: Surescripts Eligibility and Formulary
+  tags:
+  - Eligibility
+  - Formulary
+  - Benefit
+  - X12
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://surescripts.com/what-we-do
+  endpointsModeled: true
+  properties:
+  - url: https://surescripts.com/what-we-do
+    type: Documentation
+  description: Verifies patient pharmacy benefit eligibility and returns formulary
+    and benefit coverage details so prescribers see coverage and coverage alternatives
+    in workflow. Modeled on X12 270/271 eligibility exchange and NCPDP formulary and
+    benefit files delivered through the network to certified systems.
+- aid: surescripts:surescripts-real-time-prescription-benefit-api
+  name: Surescripts Real-Time Prescription Benefit
+  tags:
+  - Real-Time Prescription Benefit
+  - RTPB
+  - Pricing
+  - Cost Transparency
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://surescripts.com/what-we-do
+  endpointsModeled: true
+  properties:
+  - url: https://surescripts.com/what-we-do
+    type: Documentation
+  description: Returns patient-specific, real-time out-of-pocket drug cost, coverage
+    status, and therapeutic alternatives at the point of prescribing. Modeled on the
+    NCPDP Real-Time Prescription Benefit (RTPB) standard and exchanged through certified
+    prescriber systems - no public endpoint or OpenAPI is published.
+- aid: surescripts:surescripts-electronic-prior-authorization-api
+  name: Surescripts Electronic Prior Authorization
+  tags:
+  - Prior Authorization
+  - ePA
+  - NCPDP SCRIPT
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://surescripts.com/prior-authorization-portal-resources
+  endpointsModeled: true
+  properties:
+  - url: https://surescripts.com/prior-authorization-portal-resources
+    type: Documentation
+  description: Automates electronic prior authorization (ePA) between prescribers and
+    PBMs/payers using the NCPDP SCRIPT ePA transaction set (PAInitiationRequest,
+    PARequest, PAResponse, and related messages). Delivered in-workflow through certified
+    systems; the transaction surface is modeled from the NCPDP SCRIPT ePA standard.
+- aid: surescripts:surescripts-clinical-direct-messaging-api
+  name: Surescripts Clinical Direct Messaging
+  tags:
+  - Clinical Direct Messaging
+  - Direct Secure Messaging
+  - Interoperability
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://surescripts.com/what-we-do
+  endpointsModeled: true
+  properties:
+  - url: https://surescripts.com/what-we-do
+    type: Documentation
+  description: Provides secure, HIPAA-compliant clinical message exchange (Direct Secure
+    Messaging) for care coordination between providers, including transitions of care
+    and referrals. Delivered over the Direct protocol through certified partners rather
+    than a public REST API.
+- aid: surescripts:surescripts-record-locator-exchange-api
+  name: Surescripts Record Locator and Exchange
+  tags:
+  - Record Locator
+  - Clinical Data Exchange
+  - Interoperability
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://surescripts.com/what-we-do
+  endpointsModeled: true
+  properties:
+  - url: https://surescripts.com/what-we-do
+    type: Documentation
+  description: Locates where a patient has clinical records across the network and
+    enables retrieval of relevant clinical documents to inform care decisions. Delivered
+    to certified participants through the network; the exchange surface is modeled
+    and not publicly documented as an API.
+common:
+- type: LinkedIn
+  url: https://www.linkedin.com/company/surescripts
+- type: Website
+  url: https://surescripts.com
+- type: Documentation
+  url: https://surescripts.com/what-we-do
+- type: Certifications
+  url: https://surescripts.com/why-surescripts/certifications-and-accreditations
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
