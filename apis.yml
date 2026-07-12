@@ -146,6 +146,8 @@ apis:
     to certified participants through the network; the exchange surface is modeled
     and not publicly documented as an API.
 common:
+- type: DomainSecurity
+  url: security/surescripts-domain-security.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/surescripts
 - type: Website
