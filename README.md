@@ -39,11 +39,6 @@ Routes electronic prescriptions between prescribers and pharmacies over the NCPD
 
 - **Human URL:** [https://surescripts.com/what-we-do/e-prescribing](https://surescripts.com/what-we-do/e-prescribing)
 
-### Surescripts Medication History
-
-Returns a patient's fills and claims-based medication history aggregated across pharmacies and PBMs to support medication reconciliation at the point of care.
-
-- **Human URL:** [https://surescripts.com/what-we-do](https://surescripts.com/what-we-do)
 
 ### Surescripts Eligibility and Formulary
 
