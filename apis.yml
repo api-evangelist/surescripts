@@ -2,7 +2,7 @@ aid: surescripts
 url: https://raw.githubusercontent.com/api-evangelist/surescripts/refs/heads/main/apis.yml
 name: Surescripts
 kind: company
-description: Surescripts operates the largest health information network in the United States, connecting prescribers, pharmacies, pharmacy benefit managers (PBMs), health plans, and health systems for e-prescribing, medication history, benefit and eligibility verification, electronic prior authorization, and clinical interoperability. Surescripts is a network operator rather than a public API provider - its transaction services run over NCPDP SCRIPT (NewRx, RxRenewal, RxChange, RxTransfer, RxFill, CancelRx), NCPDP Telecommunication, and X12 (270/271 eligibility, 278 prior authorization) standards. There is no self-serve developer portal, no published OpenAPI, and no free API keys; access is gated behind a Surescripts certification process (conformance testing against current NCPDP standards, plus DEA third-party audit for EPCS) or through a certified middleware/EHR partner. The service surfaces below are honestly modeled from Surescripts' published solution descriptions and the underlying NCPDP/X12 transaction standards - endpoints are not publicly documented.
+description: Surescripts operates the largest health information network in the United States, connecting prescribers, pharmacies, pharmacy benefit managers (PBMs), health plans, and health systems for e-prescribing, medication history, benefit and eligibility verification, electronic prior authorization, and clinical interoperability. Transaction services run over NCPDP SCRIPT (NewRx, RxRenewal, RxChange, RxTransfer, RxFill, CancelRx), NCPDP Real-Time Prescription Benefit, NCPDP Formulary and Benefit, X12 (270/271 eligibility, 278 prior authorization), the Direct Standard, and - since the Surescripts Developer Portal launched at docs.surescripts.com on 2026-08-06 - two publicly documented HTTP APIs - a Medication History for Populations API implemented in HL7 FHIR R4, and a four-endpoint Formulary Download REST API. Both authenticate the calling organization with a Surescripts-issued client certificate over mutual TLS plus a Participant ID header; Surescripts runs its own Certificate Authority. There is still no OpenAPI, no self-serve sign-up, no published pricing and no free API keys - production access requires Surescripts certification (conformance testing against current NCPDP standards, Certification Review Board contract approval, and a DEA third-party audit for EPCS) or integration through a certified middleware/EHR partner.
 accessModel:
   pricing: unknown
   onboarding: unknown
@@ -11,9 +11,12 @@ accessModel:
   public: false
   label: Unknown
   confidence: low
-  source: []
-  generated: '2026-07-22'
-  method: derived
+  source:
+    - https://docs.surescripts.com/
+    - https://docs.surescripts.com/medhistory-populations/guide/integration-and-production
+    - https://surescripts.com/who-we-are/contact-us
+  generated: '2026-08-15'
+  method: searched
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/surescripts.png
 tags:
   - Healthcare
@@ -23,11 +26,78 @@ tags:
   - Medication History
   - Prior Authorization
   - Interoperability
+  - FHIR
+  - Formulary
+  - Eligibility
+  - Real-Time Prescription Benefit
+  - Mutual TLS
   - Gated
 created: '2026-07-04'
-modified: '2026-07-25'
+modified: '2026-08-15'
 specificationVersion: '0.19'
 apis:
+  - aid: surescripts:surescripts-medication-history-populations-fhir-api
+    name: Surescripts Medication History for Populations FHIR API
+    tags:
+      - FHIR
+      - HL7 FHIR R4
+      - Medication History
+      - Care Coordination
+      - Prescription Notifications
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.surescripts.com/medhistory-populations/guide
+    baseURL: https://care-coordination.surescripts.net/ext/v1
+    endpointsModeled: false
+    properties:
+      - url: https://docs.surescripts.com/medhistory-populations/guide
+        type: Documentation
+      - url: https://docs.surescripts.com/medhistory-populations/guide/medication-history-for-populations-element-details
+        type: APIReference
+      - url: https://docs.surescripts.com/medhistory-populations/guide/request-and-response-examples
+        type: Documentation
+      - url: https://docs.surescripts.com/medhistory-populations/guide/document-change-log
+        type: ChangeLog
+    description: >-
+      Publicly documented HL7 FHIR Release 4 API for retrieving medication history panels and
+      near-real-time Prescription Notifications for enrolled patient populations. Panels and
+      notifications are pulled with a FHIR search of the Communication resource
+      (GET /ext/v1/Communication) and returned as a Bundle of Patient, Organization,
+      Practitioner, MedicationRequest, MedicationDispense, Medication, Condition and
+      Communication resources, with CapabilityStatement and OperationOutcome available.
+      Authentication is mutual TLS with a Surescripts-issued client certificate plus mandatory
+      X-SENDER-UID and X-SENDER-UID-QUALIFIER headers. The guide templates the host as
+      https://FQDN/ext/v1; the base URL recorded here is the host that appears throughout the
+      provider's own published request/response examples, and a live TLS probe on 2026-08-15
+      confirmed it serves a Surescripts-issued certificate for that name.
+  - aid: surescripts:surescripts-formulary-download-api
+    name: Surescripts Formulary Download API
+    tags:
+      - Formulary
+      - NCPDP Formulary and Benefit
+      - REST
+      - File Download
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.surescripts.com/formulary-download/guide
+    baseURL: https://formulary.surescripts.net/formulary-download
+    endpointsModeled: false
+    properties:
+      - url: https://docs.surescripts.com/formulary-download/guide
+        type: Documentation
+      - url: https://docs.surescripts.com/formulary-download/guide/api-details
+        type: APIReference
+      - url: https://docs.surescripts.com/formulary-download/guide/security-and-data-access
+        type: Authentication
+      - url: https://docs.surescripts.com/formulary-download/guide/document-change-log
+        type: ChangeLog
+    description: >-
+      Four documented REST endpoints that let a technology vendor locate and download NCPDP
+      Formulary and Benefit lists - GET /formulary/pbms, GET /formulary/listTypes,
+      GET /formulary/lists (paged search by PBM, type, sub-type, version and publish/change
+      date), and GET /formulary/pbms/{pbmId}/types/{type}[/subtypes/{subtype}]/lists/{list}/file
+      which streams the formulary file itself. Supports both NCPDP F&B 3.0 and v60 and
+      translates between them in either direction. Access is restricted by the mutual-TLS client
+      certificate together with a required x-participant-id header; errors return a JSON body
+      whose code is the HTTP status plus a two-digit sub-code.
   - aid: surescripts:surescripts-e-prescribing-api
     name: Surescripts E-Prescribing
     tags:
@@ -36,12 +106,14 @@ apis:
       - NewRx
       - CancelRx
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://surescripts.com/what-we-do/e-prescribing
+    humanURL: https://docs.surescripts.com/eprescribing/home
     endpointsModeled: true
     properties:
-      - url: https://surescripts.com/what-we-do/e-prescribing
+      - url: https://docs.surescripts.com/eprescribing/home
         type: Documentation
-    description: Routes electronic prescriptions between prescribers and pharmacies over the NCPDP SCRIPT standard, supporting NewRx, RxRenewal, RxChange, RxTransfer, RxFill, CancelRx, and NewRxRequest transactions, plus Electronic Prescribing for Controlled Substances (EPCS). Delivered via certified EHR and pharmacy system integrations, not a public REST endpoint - transactions are modeled from the NCPDP SCRIPT standard.
+      - url: https://docs.surescripts.com/eprescribing/guide
+        type: APIReference
+    description: Routes electronic prescriptions between prescribers and pharmacies over the NCPDP SCRIPT standard (version 2023011), supporting NewRx, RxRenewalRequest/Response, RxChangeRequest/Response, RxTransfer, RxFill, CancelRx, and Status/Error/Verify transactions, plus Electronic Prescribing for Controlled Substances (EPCS). Delivered via certified EHR and pharmacy system integrations, not a public REST endpoint - the transaction set is documented in the E-Prescribing Companion Guide on the Surescripts Developer Portal.
   - aid: surescripts:surescripts-eligibility-formulary-api
     name: Surescripts Eligibility and Formulary
     tags:
@@ -50,12 +122,16 @@ apis:
       - Benefit
       - X12
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://surescripts.com/what-we-do
+    humanURL: https://docs.surescripts.com/eligibility/home
     endpointsModeled: true
     properties:
-      - url: https://surescripts.com/what-we-do
+      - url: https://docs.surescripts.com/eligibility/home
         type: Documentation
-    description: Verifies patient pharmacy benefit eligibility and returns formulary and benefit coverage details so prescribers see coverage and coverage alternatives in workflow. Modeled on X12 270/271 eligibility exchange and NCPDP formulary and benefit files delivered through the network to certified systems.
+      - url: https://docs.surescripts.com/eligibility/guide
+        type: APIReference
+      - url: https://docs.surescripts.com/formulary/home
+        type: Documentation
+    description: Verifies patient pharmacy benefit eligibility and returns formulary and benefit coverage details so prescribers see coverage and coverage alternatives in workflow. Eligibility rides X12 270 request / 271 response exchange through the network; formulary rides the NCPDP Formulary and Benefit standard. Companion guides for both are published on the Surescripts Developer Portal; the machine-callable download surface is catalogued separately as the Formulary Download API.
   - aid: surescripts:surescripts-real-time-prescription-benefit-api
     name: Surescripts Real-Time Prescription Benefit
     tags:
@@ -64,12 +140,14 @@ apis:
       - Pricing
       - Cost Transparency
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://surescripts.com/what-we-do
+    humanURL: https://docs.surescripts.com/rtpb/home
     endpointsModeled: true
     properties:
-      - url: https://surescripts.com/what-we-do
+      - url: https://docs.surescripts.com/rtpb/home
         type: Documentation
-    description: Returns patient-specific, real-time out-of-pocket drug cost, coverage status, and therapeutic alternatives at the point of prescribing. Modeled on the NCPDP Real-Time Prescription Benefit (RTPB) standard and exchanged through certified prescriber systems - no public endpoint or OpenAPI is published.
+      - url: https://docs.surescripts.com/rtpb-providers/guide
+        type: APIReference
+    description: Returns patient-specific, real-time out-of-pocket drug cost, coverage status, and therapeutic alternatives at the point of prescribing, as a synchronous RTPBRequest/RTPBResponse pair. Implements the NCPDP Real-Time Prescription Benefit standard v13 XML schema and is exchanged through certified prescriber, pharmacy and PBM/payer systems. Companion guides for provider vendors, pharmacies and PBM/payers are published on the Surescripts Developer Portal; no public REST endpoint or OpenAPI exists.
   - aid: surescripts:surescripts-electronic-prior-authorization-api
     name: Surescripts Electronic Prior Authorization
     tags:
@@ -82,7 +160,7 @@ apis:
     properties:
       - url: https://surescripts.com/prior-authorization-portal-resources
         type: Documentation
-    description: Automates electronic prior authorization (ePA) between prescribers and PBMs/payers using the NCPDP SCRIPT ePA transaction set (PAInitiationRequest, PARequest, PAResponse, and related messages). Delivered in-workflow through certified systems; the transaction surface is modeled from the NCPDP SCRIPT ePA standard.
+    description: Automates electronic prior authorization (ePA) between prescribers and PBMs/payers using the NCPDP SCRIPT ePA transaction set (PAInitiationRequest, PARequest, PAResponse, and related messages) alongside X12 278. Delivered in-workflow through certified systems; the transaction surface is modeled from the NCPDP SCRIPT ePA standard.
   - aid: surescripts:surescripts-clinical-direct-messaging-api
     name: Surescripts Clinical Direct Messaging
     tags:
@@ -95,7 +173,7 @@ apis:
     properties:
       - url: https://surescripts.com/what-we-do
         type: Documentation
-    description: Provides secure, HIPAA-compliant clinical message exchange (Direct Secure Messaging) for care coordination between providers, including transitions of care and referrals. Delivered over the Direct protocol through certified partners rather than a public REST API.
+    description: Provides secure, HIPAA-compliant clinical message exchange (Direct Secure Messaging) for care coordination between providers, including transitions of care and referrals. Delivered over the Direct Standard through certified partners rather than a public REST API; Surescripts is DirectTrust-accredited as a HISP, Registration Authority and Certificate Authority.
   - aid: surescripts:surescripts-record-locator-exchange-api
     name: Surescripts Record Locator and Exchange
     tags:
@@ -103,23 +181,72 @@ apis:
       - Clinical Data Exchange
       - Interoperability
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://surescripts.com/what-we-do
+    humanURL: https://docs.surescripts.com/record-locator-exchange/home
     endpointsModeled: true
     properties:
-      - url: https://surescripts.com/what-we-do
+      - url: https://docs.surescripts.com/record-locator-exchange/home
         type: Documentation
-    description: Locates where a patient has clinical records across the network and enables retrieval of relevant clinical documents to inform care decisions. Delivered to certified participants through the network; the exchange surface is modeled and not publicly documented as an API.
+    description: Locates where a patient has clinical records across the network and enables retrieval of relevant clinical documents to inform care decisions. Delivered to certified participants through the network; the exchange surface is modeled and not publicly documented as a callable API.
 common:
-  - type: DomainSecurity
-    url: security/surescripts-domain-security.yml
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/surescripts
   - type: Website
     url: https://surescripts.com
+  - type: DeveloperPortal
+    url: https://docs.surescripts.com
   - type: Documentation
-    url: https://surescripts.com/what-we-do
+    url: https://docs.surescripts.com
+  - type: APIReference
+    url: https://docs.surescripts.com/formulary-download/guide/api-details
+  - type: GettingStarted
+    url: https://docs.surescripts.com/connectivity/home
+  - type: Support
+    url: https://surescripts.com/support
+  - type: Blog
+    url: https://surescripts.com/insights
+  - type: Login
+    url: https://sso.surescripts.net/account/login
+  - type: TermsOfService
+    url: https://surescripts.com/terms-of-use
+  - type: PrivacyPolicy
+    url: https://surescripts.com/privacy-office
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/surescripts
   - type: Certifications
     url: https://surescripts.com/why-surescripts/certifications-and-accreditations
+  - type: Compliance
+    url: https://surescripts.com/why-surescripts/certifications-and-accreditations
+  - type: TrustCenter
+    url: security/surescripts-trust-center.yml
+  - type: DomainSecurity
+    url: security/surescripts-domain-security.yml
+  - type: Authentication
+    url: authentication/surescripts-authentication.yml
+  - type: Conventions
+    url: conventions/surescripts-conventions.yml
+  - type: ErrorCatalog
+    url: errors/surescripts-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/surescripts-lifecycle.yml
+  - type: Conformance
+    url: conformance/surescripts-conformance.yml
+  - type: ChangeLog
+    url: changelog/surescripts-changelog.yml
+  - type: RateLimits
+    url: rate-limits/surescripts-rate-limits.yml
+  - type: Plans
+    url: plans/surescripts-plans-pricing.yml
+  - type: Sandbox
+    url: sandbox/surescripts-sandbox.yml
+  - type: DataModel
+    url: data-model/surescripts-data-model.yml
+  - type: Packages
+    url: packages/surescripts-packages.yml
+  - type: LLMsTxt
+    url: llms/surescripts-llms.txt
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-15'
+  status: enriched
+  artifacts_added: 15
+  pass: local-v1
