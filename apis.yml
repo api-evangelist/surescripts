@@ -34,7 +34,7 @@ tags:
   - Gated
 created: '2026-07-04'
 modified: '2026-08-15'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
   - aid: surescripts:surescripts-medication-history-populations-fhir-api
     name: Surescripts Medication History for Populations FHIR API
