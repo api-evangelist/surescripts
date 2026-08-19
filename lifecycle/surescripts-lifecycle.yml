@@ -1,0 +1,66 @@
+generated: '2026-08-15'
+method: searched
+source: https://docs.surescripts.com/
+docs:
+  - https://docs.surescripts.com/medhistory-populations/guide/integration-and-production
+  - https://docs.surescripts.com/formulary-download/guide/api-details
+  - https://surescripts.com/NCPDP-2023-upgrade
+  - https://surescripts.com/support
+versioning:
+  scheme: standards-version + uri-path
+  detail: >-
+    Surescripts versions its surfaces by the industry standard they implement rather than by a
+    proprietary API version. The FHIR surface carries /ext/v1 in the path and implements HL7
+    FHIR R4. The Formulary Download API selects the payload version with a `version` parameter
+    (30 = NCPDP F&B 3.0, 60 = NCPDP F&B v60) and translates between them in both directions.
+    Message surfaces track NCPDP SCRIPT 2023011, NCPDP RTPB v13, and X12 270/271 and 278.
+  current:
+    fhir_api: v1 (HL7 FHIR R4)
+    formulary_download: '30 and 60'
+    script: '2023011'
+    rtpb: v13
+  docs: https://surescripts.com/NCPDP-2023-upgrade
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: >-
+    No RFC 8594 Sunset/Deprecation header support and no published API deprecation policy.
+    Version transition is instead run as an industry-wide standards upgrade programme - the
+    NCPDP 2023 upgrade - with published milestones, a certification tester, and network
+    conformance deadlines. That is a real migration process but it is not an API deprecation
+    policy, so no Deprecation pointer is emitted in apis.yml.
+  standards_upgrade_programme:
+    url: https://surescripts.com/NCPDP-2023-upgrade
+    certification_tester: https://surescripts.com/insights/ncpdp-upgrade-certification-tester
+certification:
+  required: true
+  description: >-
+    A participant cannot move to production by self-service. Surescripts runs message
+    validation testing in staging, then the contract is approved by the Surescripts
+    Certification Review Board before the production connection is configured. Pre-production
+    network requirements can also include Identity Proofing, attestations, and a DEA
+    third-party audit for EPCS.
+  requirement_language:
+    must: enforced by production code or Surescripts business rules
+    shall: required for certification on the network
+    should: guidance and best practice, not required for certification
+  source: https://docs.surescripts.com/medhistory-populations/guide/integration-and-production
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    Service expectations, incident management and the escalation matrix are covered by the
+    Network Operations Guide and the Staging Environment Operations Guide, both of which sit
+    behind the developer portal's magic-link gate. No public SLA or uptime target is published.
+status_page: null
+status_page_note: >-
+  No public status page. status.surescripts.com does not resolve (NXDOMAIN, probed 2026-08-15).
+  Incident communication runs through Case Management (community.surescripts.net/cases) and the
+  assigned Account Manager. No StatusPage pointer is emitted.
+support:
+  url: https://surescripts.com/support
+  case_management: https://community.surescripts.net/cases
+  workbench_login: https://sso.surescripts.net/account/login
+changelog:
+  detail: see changelog/surescripts-changelog.yml
+deprecated_operations: []

@@ -1,0 +1,72 @@
+generated: '2026-08-15'
+method: searched
+probe: true
+source: https://surescripts.com/why-surescripts/certifications-and-accreditations
+url: https://surescripts.com/why-surescripts/certifications-and-accreditations
+note: >-
+  probe-security-programs.py found no trust.surescripts.com / security.surescripts.com host
+  (both NXDOMAIN, 2026-08-15) and no /trust, /security or /compliance path. Surescripts does
+  publish a named certifications and accreditations page on its own site, which carries the
+  certification detail a trust center would, so this artifact is recorded as searched from that
+  page rather than from a hosted trust portal.
+certifications:
+  - HITRUST r2
+  - SOC 2 Type II
+  - EHNAC
+  - DirectTrust
+  - WebTrust for Certification Authorities
+  - HIPAA
+programs:
+  - name: HITRUST r2 (Risk-Based, 2-Year) Certified
+    detail: >-
+      Demonstrates that key platforms within Surescripts solutions and their supporting
+      infrastructure meet HITRUST's highest level of information security and compliance;
+      more than 300 requirements were met.
+  - name: SOC 2 Type II
+    detail: >-
+      Annual Service Organization Controls 2 Type II report issued by an independent AICPA
+      audit firm, assessing design and operating effectiveness of controls against the
+      security, availability and confidentiality trust principles.
+  - name: EHNAC
+    detail: >-
+      Participation in the Electronic Healthcare Network Accreditation Commission programme,
+      a federally recognised standards development organisation and non-profit accrediting
+      body for transactional quality, operational efficiency and healthcare data security.
+  - name: DirectTrust
+    detail: >-
+      Accredited for Health Information Service Provider (HISP), Registration Authority (RA),
+      Certificate Authority (CA) and Privacy & Security operations in support of DirectTrust
+      messaging for Clinical Direct Messaging.
+  - name: Surescripts Certification Practice Statement (CPS)
+    detail: >-
+      Publicly available document describing Surescripts' certificate practices and policies,
+      required by WebTrust for Certification Authorities. Surescripts operates as a Certificate
+      Authority and Registration Authority and issues the digital certificates used for
+      DirectTrust products and the mutually authenticated TLS connections customers use to
+      reach its APIs.
+evidence:
+  - source: https://surescripts.com/why-surescripts/certifications-and-accreditations
+    status: 200
+    keywords:
+      - HITRUST
+      - SOC 2 Type II
+      - EHNAC
+      - DirectTrust
+      - Certification Practice Statement
+  - source: https://care-coordination.surescripts.net
+    kind: tls-chain
+    detail: >-
+      Live TLS probe 2026-08-15 confirms the CPS in practice - the API host's certificate is
+      issued by "Surescripts Issuing Certification Authority" under "Surescripts Root
+      Certification Authority".
+negative_findings:
+  - host: trust.surescripts.com
+    result: NXDOMAIN
+  - host: security.surescripts.com
+    result: NXDOMAIN
+  - path: /.well-known/security.txt
+    result: 404 on surescripts.com, www.surescripts.com and docs.surescripts.com
+  - item: vulnerability disclosure / bug bounty programme
+    result: >-
+      None found. No security.txt Policy or Contact, no HackerOne/Bugcrowd/Intigriti listing,
+      no responsible-disclosure page. No VulnerabilityDisclosure or Security pointer is emitted.

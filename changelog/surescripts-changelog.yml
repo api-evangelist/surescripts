@@ -1,0 +1,38 @@
+generated: '2026-08-15'
+method: searched
+source: https://docs.surescripts.com/medhistory-populations/guide/document-change-log
+scheme: per-guide dated Document Change Log
+current_version: null
+note: >-
+  Surescripts does not publish one network-wide API changelog. Every companion guide in the
+  Developer Portal ends with its own dated "Document Change Log" section listing the sections
+  changed and what changed. Each of those logs currently carries a single entry dated
+  2026-08-06 marking the initial release of the Developer Portal itself, so the public change
+  history begins there. Broader version movement is communicated through the NCPDP 2023 upgrade
+  programme rather than through these logs.
+changelog_urls:
+  - https://docs.surescripts.com/medhistory-populations/guide/document-change-log
+  - https://docs.surescripts.com/eligibility/guide/document-change-log
+  - https://docs.surescripts.com/medhistory/guide/document-change-log
+  - https://docs.surescripts.com/formulary/guide/document-change-log
+  - https://docs.surescripts.com/formulary-download/guide/document-change-log
+  - https://docs.surescripts.com/rtpb-providers/guide/document-change-log
+  - https://docs.surescripts.com/medhistory-pharmacies/guide/document-change-log
+  - https://docs.surescripts.com/medhistory-claims-suppliers/guide/document-change-log
+entries:
+  - date: '2026-08-06'
+    guide: Medication History for Populations
+    breaking: false
+    highlights:
+      - Developer Portal - initial release
+  - date: '2026-08-06'
+    guide: Eligibility
+    breaking: false
+    highlights:
+      - Developer portal - initial release
+related_programme:
+  name: NCPDP 2023 standards upgrade
+  url: https://surescripts.com/NCPDP-2023-upgrade
+  detail: >-
+    Milestone-driven upgrade to NCPDP SCRIPT 2023011 with published guidance and a
+    self-driving Certification Tester; this is where version transitions are announced.

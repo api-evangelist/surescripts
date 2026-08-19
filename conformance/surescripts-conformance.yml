@@ -1,0 +1,130 @@
+generated: '2026-08-15'
+method: searched
+source: https://docs.surescripts.com/
+docs:
+  - https://docs.surescripts.com/medhistory-populations/guide
+  - https://docs.surescripts.com/formulary-download/guide/api-details
+  - https://docs.surescripts.com/rtpb-providers/guide
+  - https://surescripts.com/why-surescripts/certifications-and-accreditations
+note: >-
+  Standards conformance read from the public Surescripts Developer Portal guides and the
+  Surescripts certifications page. Surescripts is a standards-based network operator: its
+  contract with participants IS the NCPDP / X12 / HL7 standard set, enforced through a
+  certification programme, rather than a proprietary API contract.
+standards:
+  - id: hl7-fhir-r4
+    conforms: true
+    evidence: >-
+      Medication History for Populations is implemented with HL7 FHIR Release 4; responses are
+      FHIR Bundles of Patient, Organization, Practitioner, MedicationRequest,
+      MedicationDispense, Medication, Condition and Communication resources, with
+      CapabilityStatement and OperationOutcome available.
+    source: https://docs.surescripts.com/medhistory-populations/guide/messages-overview
+  - id: hl7-us-core
+    conforms: partial
+    evidence: >-
+      The guide directs implementers to the US Core Implementation Guide as required external
+      material; Surescripts does not publish a conformance statement against a specific US Core
+      version on the public pages.
+    source: https://docs.surescripts.com/medhistory-populations/guide
+  - id: ncpdp-script-2023011
+    conforms: true
+    evidence: >-
+      E-Prescribing and electronic prior authorization ride NCPDP SCRIPT version 2023011
+      (NewRx, RxRenewalRequest/Response, RxChangeRequest/Response, CancelRx, RxFill,
+      Status/Error/Verify).
+    source: https://docs.surescripts.com/eprescribing/home
+  - id: ncpdp-rtpb-v13
+    conforms: true
+    evidence: >-
+      Real-Time Prescription Benefit implements the NCPDP RTPB v13 XML schema; the companion
+      guide clarifies Surescripts-specific requirements on top of the base standard.
+    source: https://docs.surescripts.com/rtpb-providers/guide
+  - id: ncpdp-formulary-and-benefit
+    conforms: true
+    evidence: >-
+      Formulary Download API publishes NCPDP Formulary & Benefit 3.0 and v60 lists and
+      translates between the two versions in both directions.
+    source: https://docs.surescripts.com/formulary-download/guide/api-details
+  - id: x12-270-271
+    conforms: true
+    evidence: Eligibility exchange is X12 270 request / 271 response through the network.
+    source: https://docs.surescripts.com/rtpb-providers/guide/messages-overview
+  - id: x12-278
+    conforms: true
+    evidence: Prior authorization exchange uses X12 278 alongside NCPDP SCRIPT ePA.
+    source: https://surescripts.com/prior-authorization-portal-resources
+  - id: direct-standard
+    conforms: true
+    evidence: >-
+      Clinical Direct Messaging runs the Direct Standard; Surescripts is DirectTrust-accredited
+      as a HISP, Registration Authority and Certificate Authority.
+    source: https://surescripts.com/why-surescripts/certifications-and-accreditations
+  - id: mutual-tls
+    conforms: true
+    evidence: >-
+      Every documented API surface requires a Surescripts-issued client certificate over mutual
+      TLS; verified live 2026-08-15 - the API host presents a Surescripts private-CA chain and
+      resets anonymous connections.
+    source: https://docs.surescripts.com/formulary-download/guide/security-and-data-access
+  - id: webtrust-for-ca
+    conforms: true
+    evidence: >-
+      Surescripts publishes a Certification Practice Statement as required by WebTrust for
+      Certification Authorities, and operates as a CA and RA.
+    source: https://surescripts.com/why-surescripts/certifications-and-accreditations
+  - id: oauth2
+    conforms: false
+    evidence: No OAuth 2.0 flows are documented on any public Surescripts page.
+  - id: oidc
+    conforms: false
+    evidence: No OpenID Connect discovery document is served; /.well-known/openid-configuration 404s.
+  - id: smart-on-fhir
+    conforms: false
+    evidence: >-
+      No SMART configuration is published and the FHIR surface authenticates with mutual TLS
+      plus participant headers rather than SMART/OAuth scopes.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Errors are FHIR OperationOutcome or a vendor {code,message} JSON object; no
+      application/problem+json is documented.
+  - id: rfc8594-sunset
+    conforms: false
+    evidence: No Sunset/Deprecation header support documented.
+  - id: openapi
+    conforms: false
+    evidence: >-
+      No OpenAPI or Swagger document is published at any probed location on surescripts.com,
+      www.surescripts.com or docs.surescripts.com (2026-08-15).
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 on every Surescripts host probed.
+compliance_programs:
+  - id: hitrust-r2
+    name: HITRUST r2 (Risk-Based, 2-Year) Certified
+    detail: >-
+      Key platforms within Surescripts solutions and their supporting infrastructure met more
+      than 300 requirements for HITRUST r2 certification.
+  - id: soc2-type-ii
+    name: SOC 2 Type II
+    detail: >-
+      Annual SOC 2 Type II report issued by an independent AICPA audit firm, covering the
+      security, availability and confidentiality trust principles.
+  - id: ehnac
+    name: EHNAC accreditation
+    detail: Electronic Healthcare Network Accreditation Commission accreditation programme.
+  - id: directtrust
+    name: DirectTrust accreditation
+    detail: >-
+      Accredited for HISP, Registration Authority, Certificate Authority and Privacy & Security
+      operations in support of DirectTrust messaging.
+  - id: surescripts-cps
+    name: Surescripts Certification Practice Statement
+    detail: Publicly available CA certificate practices and policies document.
+  - id: hipaa
+    name: HIPAA
+    detail: >-
+      Clinical Direct Messaging is described as HIPAA-compliant secure clinical message
+      exchange; Surescripts operates as a covered-entity business associate across the network.
+compliance_url: https://surescripts.com/why-surescripts/certifications-and-accreditations

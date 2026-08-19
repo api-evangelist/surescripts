@@ -1,0 +1,73 @@
+# Surescripts
+
+> Surescripts operates a nationwide health information network that connects clinicians, pharmacies, payers and pharmacy benefit managers so they can exchange data securely and help improve patient outcomes. The pages below serve as primary sources of truth about who Surescripts serves, the solutions it offers, and the core capabilities that underpin its network.
+
+## Who Surescripts serves
+
+- [EHR vendors]
+(https://surescripts.com/what-we-do/ehr-vendors): Removes the barriers that send providers outside the electronic health record for answers by integrating intelligence that keeps prescribers and pharmacists in their workflow.
+
+
+- [Health plans]
+(https://surescripts.com/what-we-do/health-plans): 
+Helps care managers and providers make fully informed, cost‑effective care decisions by sharing patient coverage information and benefit insights.
+
+- [Health systems]
+(https://surescripts.com/what-we-do/health-systems): Brings comprehensive patient intelligence directly into the health system’s EHR so clinicians have the information they need at the point of care.
+
+- [Healthcare analytics vendors]
+(https://surescripts.com/what-we-do/healthcare-analytics-vendors): Provides trusted clinical and medication data to stop manual searches and enhance analytics capabilities for your customers.
+
+- [Life sciences companies & patient access vendors]
+(https://surescripts.com/what-we-do/life-sciences-companies): Supports programs that create faster, simpler paths to treatment for patients by delivering benefit and price intelligence when and where it’s needed.
+
+- [Pharmacy benefit managers (PBMs)]
+(https://surescripts.com/what-we-do/pbms): Turns PBM data into actionable patient intelligence that optimizes prescriptions, improves prior authorization efficiency and extends outreach to clinicians.
+
+- [Pharmacies]
+(https://surescripts.com/what-we-do/pharmacy/pharmacies): Delivers critical prescription and benefit information straight from the source to empower pharmacists and enable more efficient, effective patient care.
+
+- [Pharmacy technology vendors]
+(https://surescripts.com/what-we-do/pharmacy/pharmacy-technology-vendors): Ensures pharmacies have comprehensive patient data and the ability to communicate electronically with other providers.
+
+- [Specialty pharmacies]
+(https://surescripts.com/what-we-do/pharmacy/specialty-pharmacies): Reduces information gaps so staff spend less time chasing data and more time supporting patients—helping them start therapy faster and improve medication adherence.
+
+
+## Surescript’s Solutions
+
+Surescripts’ solutions tackle shared challenges across the healthcare ecosystem by combining intelligence with interoperability.
+
+- [Intelligent Prescribing]
+(https://surescripts.com/what-we-do/intelligent-prescribing): Ensures safe, clear prescriptions through high‑quality data and automation that enhance collaboration between prescribers and pharmacists.
+
+- [Intelligent Prior Authorization]
+(https://surescripts.com/what-we-do/intelligent-prior-authorization): Accelerates prior authorization decisions to clinically appropriate outcomes while reducing or eliminating manual work.
+
+- [Benefit & Price Intelligence]
+(https://surescripts.com/what-we-do/benefit-price-intelligence): Provides prescription benefit and price insights throughout the care journey to help choose the best medication option and avoid unnecessary prior authorizations.
+
+- [Interoperability]
+(https://surescripts.com/what-we-do/interoperability): Gives clinicians and care managers more patient insights and better communication channels, improving treatment and transitions of care.
+
+- [Value‑Based Care]
+(https://surescripts.com/what-we-do/value-based-care): Offers a sharper view of patients’ medication history, care activity and benefits, enabling improved adherence, lower costs and closure of care gaps.
+
+- [Care Team Evolution]
+(https://surescripts.com/what-we-do/care-team-evolution): Brings more information into workflows so patients receive affordable treatment and support wherever they seek care.
+
+## Network & trust
+
+- [Why Surescripts]
+(https://surescripts.com/why-surescripts): Explains how Surescripts brings healthcare together to inform and accelerate decisions. The network delivers the right information for the right purpose at the right time while upholding the highest standards for network integrity and compliance, turning health data into valuable intelligence and transforming workflows to deliver better, safer and more cost‑effective care.
+
+- [The Surescripts network]
+(https://surescripts.com/why-surescripts/network): Highlights the scale and infrastructure of the Surescripts network, emphasizing industry‑leading reliability, security and scalability backed by a data‑management framework that prioritizes accuracy, trust and stewardship.
+
+## Insights & careers
+
+- [News & Insights]
+(https://surescripts.com/insights): Surescripts' blog “Intelligence in Action” features the latest stories and perspectives at the intersection of healthcare and technology.
+
+- [Careers at Surescripts]
+(https://surescripts.com/who-we-are/careers): Invites mission‑driven professionals to join a company with a network that supports millions of care providers and virtually every American patient; encourages candidates to help tackle big healthcare challenges in an environment that brings out the best version of you and values purpose, collaboration and positive impact.

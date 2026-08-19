@@ -1,0 +1,66 @@
+generated: '2026-08-15'
+method: derived
+status: candidate
+source: https://docs.surescripts.com/formulary-download/guide/api-details
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+note: >-
+  Surescripts ships NO MCP server. Searched the Surescripts Developer Portal, surescripts.com,
+  npm and GitHub (2026-08-15) - no hosted remote endpoint, no stdio package, no registry entry.
+  mcp.surescripts.com does not resolve. No MCPServer pointer is emitted in apis.yml, because
+  that pointer asserts an agent surface the provider does not serve.
+  The tools below are a CANDIDATE mapping derived from the four REST endpoints Surescripts
+  publicly documents for the Formulary Download API. They are a design starting point only;
+  none of them exists today and no endpoint URL is invented here.
+  A practical constraint any future server has to solve: every Surescripts API requires a
+  Surescripts-issued mutual-TLS client certificate plus a configured Participant ID, so an MCP
+  server would have to be run inside the participant's own trust boundary rather than hosted by
+  Surescripts for anonymous agents.
+server:
+  name: surescripts
+  transport: null
+  url: null
+tools:
+  - name: list_formulary_pbms
+    description: >-
+      List every PBM that supplies formulary data through Surescripts, with the NCPDP F&B
+      source versions it publishes and the date it last published.
+    source_operation: GET /formulary/pbms
+    source_doc: https://docs.surescripts.com/formulary-download/guide/api-details
+    confidence: high
+  - name: list_formulary_list_types
+    description: >-
+      List the formulary list types and (for v3.0) sub-types available to the caller, scoped to
+      the NCPDP F&B versions the participant is entitled to.
+    source_operation: GET /formulary/listTypes
+    source_doc: https://docs.surescripts.com/formulary-download/guide/api-details
+    confidence: high
+  - name: search_formulary_lists
+    description: >-
+      Find downloadable formulary lists by PBM, type, sub-type, version, publish date and
+      detail-change date. Returns a page of list metadata including a fileLink.
+    source_operation: GET /formulary/lists
+    source_doc: https://docs.surescripts.com/formulary-download/guide/api-details
+    confidence: high
+  - name: get_formulary_file
+    description: Download a specific formulary file for a PBM, list type (and sub-type) and list name.
+    source_operation: >-
+      GET /formulary/pbms/{pbmId}/types/{type}/lists/{list}/file and
+      GET /formulary/pbms/{pbmId}/types/{type}/subtypes/{subtype}/lists/{list}/file
+    source_doc: https://docs.surescripts.com/formulary-download/guide/api-details
+    confidence: high
+not_derived:
+  - surface: Medication History for Populations FHIR API
+    reason: >-
+      A FHIR search surface with _include / _revinclude graph expansion does not map cleanly to
+      a fixed tool list, and Surescripts documents the parameter set rather than an operation
+      catalogue. Deriving tools here would be guesswork.
+  - surface: NCPDP SCRIPT / RTPB / X12 message exchanges
+    reason: >-
+      Standards-based message exchange between certified participants, not request/response
+      operations an agent can call.

@@ -1,0 +1,109 @@
+generated: '2026-08-15'
+method: searched
+source: https://docs.surescripts.com/formulary-download/guide/security-and-data-access
+docs:
+  - https://docs.surescripts.com/formulary-download/guide/security-and-data-access
+  - https://docs.surescripts.com/medhistory-populations/guide/http-request-headers
+  - https://docs.surescripts.com/medhistory-populations/guide/integration-and-production
+  - https://docs.surescripts.com/connectivity/home
+  - https://surescripts.com/why-surescripts/certifications-and-accreditations
+note: >-
+  Derived by reading the public pages of the Surescripts Developer Portal
+  (docs.surescripts.com), not from an OpenAPI - Surescripts publishes no machine-readable
+  contract. Surescripts does not use OAuth, OIDC or bearer API keys anywhere in its public
+  documentation. Every documented API surface authenticates the CALLING ORGANIZATION with a
+  Surescripts-issued client certificate over mutual TLS, then authorizes the request with a
+  Participant ID carried in an HTTP header. Surescripts operates its own Certificate
+  Authority and Registration Authority (see the Surescripts Certification Practice Statement
+  on the certifications page), which is why its API hosts present a private-root chain.
+summary:
+  types:
+    - mutualTLS
+    - apiKey
+  api_key_in:
+    - header
+  oauth2_flows: []
+  oauth2: false
+  openid_connect: false
+  bearer_tokens: false
+  self_serve_credentials: false
+schemes:
+  - name: mutualTLS
+    type: mutualTLS
+    description: >-
+      Client certificate issued by the Surescripts Certification Authority, presented on
+      every request. Surescripts validates the certificate and resolves it to an Account ID
+      and Participant ID, which determine product entitlement and data access.
+    issued_by: Surescripts Issuing Certification Authority
+    self_serve: false
+    obtained_via: Surescripts onboarding / certification process
+    sources:
+      - https://docs.surescripts.com/formulary-download/guide/security-and-data-access
+      - https://docs.surescripts.com/medhistory-populations/guide/integration-and-production
+    evidence:
+      - >-
+        Formulary Download API: "restricts content based on the account of the user accessing
+        the system - identified by the MTLS client certificate submitted in the request"
+      - >-
+        Medication History for Populations: "For authentication, requests will use mTLS where
+        the client will provide a client certificate"
+      - >-
+        Live probe 2026-08-15: care-coordination.surescripts.net presents a leaf cert issued by
+        "Surescripts Issuing Certification Authority" chaining to "Surescripts Root Certification
+        Authority"; an anonymous request is reset before any HTTP response.
+  - name: x-participant-id
+    type: apiKey
+    in: header
+    parameter_name: x-participant-id
+    required: true
+    applies_to: Formulary Download API
+    description: >-
+      Participant ID of the requesting organization. Used together with the mTLS client
+      certificate to determine the NCPDP Formulary & Benefit version(s) available, the
+      preferred drug database, and per-file permission restrictions.
+    sources:
+      - https://docs.surescripts.com/formulary-download/guide/api-details
+      - https://docs.surescripts.com/formulary-download/guide/security-and-data-access
+  - name: X-SENDER-UID
+    type: apiKey
+    in: header
+    parameter_name: X-SENDER-UID
+    required: true
+    applies_to: Medication History for Populations FHIR API
+    description: >-
+      Participant ID of the sender, e.g. T00000000012345 (the leading T denotes a staging /
+      test participant). Accompanied by the mandatory X-SENDER-UID-QUALIFIER header, fixed
+      value 10.
+    sources:
+      - https://docs.surescripts.com/medhistory-populations/guide/http-request-headers
+  - name: X-SENDER-UID-QUALIFIER
+    type: apiKey
+    in: header
+    parameter_name: X-SENDER-UID-QUALIFIER
+    required: true
+    fixed_value: '10'
+    applies_to: Medication History for Populations FHIR API
+    sources:
+      - https://docs.surescripts.com/medhistory-populations/guide/http-request-headers
+authorization:
+  model: participant-entitlement
+  description: >-
+    Authorization is not scope-based. Entitlement is configured by Surescripts per Participant
+    ID during onboarding: which products the participant may call, which NCPDP F&B versions it
+    may read, and which files/resource IDs it may retrieve. A request that is authenticated but
+    not entitled returns 403 (Formulary Download 403-01/403-02/403-03; FHIR "Product is not set
+    up for this participant ID").
+failure_modes:
+  - condition: No client certificate presented
+    result: SSL Connect Error (connection reset; no HTTP status)
+    remediation: Include the Surescripts-issued client certificate
+  - condition: Certificate issuer or subject does not match the configured certificate
+    result: 401 Unauthorized
+  - condition: Certificate valid but participant not entitled to the product or resource
+    result: 403 Forbidden
+identity_proofing:
+  required: true
+  note: >-
+    Identity Proofing Requirements and (for EPCS) a DEA third-party audit are pre-production
+    network requirements documented in the Connectivity and Operations section of the portal.
+    Those specific guides sit behind the portal's magic-link gate.

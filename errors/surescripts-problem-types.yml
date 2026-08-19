@@ -1,0 +1,145 @@
+generated: '2026-08-15'
+method: searched
+source: https://docs.surescripts.com/formulary-download/guide/api-details
+docs:
+  - https://docs.surescripts.com/formulary-download/guide/api-details
+  - https://docs.surescripts.com/medhistory-populations/guide/messages-overview
+format: vendor
+note: >-
+  Surescripts does not use RFC 9457 application/problem+json. Two distinct error envelopes are
+  documented on the public Developer Portal pages: a FHIR OperationOutcome (returned inside a
+  Bundle) on the Medication History for Populations FHIR API, and a small JSON object with
+  `code` and `message` on the Formulary Download API, where `code` is the HTTP status, a dash,
+  and a 2-digit sub-code. Captured from the published guides - Surescripts publishes no OpenAPI
+  to derive from.
+envelopes:
+  - surface: Medication History for Populations FHIR API
+    shape: FHIR OperationOutcome within a Bundle
+    media_type: application/json+fhir
+  - surface: Formulary Download API
+    shape: '{ "code": "<http-status>-<nn>", "message": "<text>" }'
+    media_type: application/json
+problems:
+  - surface: fhir
+    status: 200
+    title: OK
+    description: Response returned, with or without results
+    remediation: >-
+      An empty result means no notifications were generated within the provided search window.
+  - surface: fhir
+    status: null
+    code: SSL Connect Error
+    title: Missing client certificate
+    description: The request did not present a client certificate, so no HTTP response is produced.
+    remediation: Include the Surescripts-issued client certificate
+  - surface: fhir
+    status: 400
+    title: Bad Request
+    description: >-
+      Missing or badly formatted parameter(s); the query string does not validate. The response
+      is a Bundle containing an OperationOutcome carrying the model's validation messages.
+      Example - a _lastUpdated value of 2018-09-0600:00:00Z is formatted incorrectly.
+    remediation: Correct the query parameters using the messages in the OperationOutcome
+  - surface: fhir
+    status: 401
+    title: Unauthorized
+    description: >-
+      A client certificate was presented but its issuer or subject does not match what is
+      configured at Surescripts.
+    remediation: Use the certificate configured with Surescripts
+  - surface: fhir
+    status: 403
+    title: Forbidden
+    description: >-
+      The product is not set up for this Participant ID, or the requested resource ID is not
+      permitted for this Participant ID.
+    remediation: >-
+      Confirm product setup with Surescripts; verify the resource ID was returned by a previous
+      FHIR request
+  - surface: fhir
+    status: 404
+    title: Not Found
+    description: Resource does not exist
+  - surface: formulary-download
+    status: 400
+    code: 400-01
+    title: Invalid version
+    description: Only version 30 or 60 is allowed
+    operations: [getLists, getFile]
+    remediation: Correct the version parameter and resubmit
+  - surface: formulary-download
+    status: 400
+    code: 400-02
+    title: Participant configuration was not found
+    operations: [getLists, getFile]
+    remediation: Contact Surescripts support to confirm your configuration
+  - surface: formulary-download
+    status: 400
+    code: 400-03
+    title: Invalid PBM Name parameter
+    operations: [getLists]
+    remediation: Valid PBM values are returned by the PBMs endpoint in the pbmId field
+  - surface: formulary-download
+    status: 400
+    code: 400-04
+    title: Invalid Type parameter
+    operations: [getLists]
+    remediation: >-
+      Valid list types are returned by the List Types endpoint in the name field; confirm the
+      types match the configured formulary version
+  - surface: formulary-download
+    status: 400
+    code: 400-05
+    title: Invalid subType parameter
+    operations: [getLists]
+    remediation: >-
+      Valid sub-types are returned by the List Types endpoint in the subTypes field; confirm
+      they match the configured formulary version
+  - surface: formulary-download
+    status: 401
+    code: 401-01
+    title: Missing certificate details
+    operations: [getPBMs, getListTypes, getLists, getFile]
+    remediation: Contact Surescripts support to confirm your configuration
+  - surface: formulary-download
+    status: 403
+    code: 403-01
+    title: Permission denied for the selected version
+    operations: [getPBMs, getListTypes, getLists, getFile]
+    remediation: Contact Surescripts support to confirm your configuration
+  - surface: formulary-download
+    status: 403
+    code: 403-02
+    title: Could not find participant
+    operations: [getPBMs, getListTypes, getLists, getFile]
+    remediation: Contact Surescripts support to confirm your configuration
+  - surface: formulary-download
+    status: 403
+    code: 403-03
+    title: Permission denied for selected file
+    operations: [getFile]
+    remediation: Participant configuration does not allow access to this file
+  - surface: formulary-download
+    status: 404
+    code: 404-01
+    title: File not found
+    operations: [getFile]
+    remediation: >-
+      The file may have been removed from the formulary list; re-run Get Lists to confirm it is
+      still published
+  - surface: formulary-download
+    status: 404
+    title: No files matching the request were found
+    operations: [getLists]
+  - surface: formulary-download
+    status: 500
+    code: 500-01
+    title: Internal error
+    operations: [getPBMs, getListTypes, getLists, getFile]
+related:
+  - >-
+    Message-standard error surfaces (NCPDP SCRIPT Error/Status/Verify messages, NCPDP RTPB
+    business errors such as PatientNotFound and DrugNotFound, and the Medication History for
+    Pharmacies error summary) are documented in the per-product companion guides on the portal.
+    The RTPB error scenarios are public; the consolidated Error Guidance Supplement sits behind
+    the portal's magic-link gate.

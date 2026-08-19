@@ -1,0 +1,64 @@
+generated: '2026-08-15'
+method: searched
+source: >-
+  registry.npmjs.org search, pypi.org, api.github.com org + repository search, and the
+  Surescripts Developer Portal (docs.surescripts.com)
+package_count: 0
+official_package_count: 0
+packages: []
+note: >-
+  Surescripts publishes NO first-party client libraries or SDKs in any public registry, and no
+  SDKs pointer is emitted in apis.yml. Integration is done by implementing the NCPDP SCRIPT /
+  RTPB / X12 / HL7 FHIR standards directly against a mutual-TLS connection, and the tooling
+  Surescripts does supply is hosted (Workbench, Directory Manager, Message Tester, Message
+  Search, Certification Tester) rather than distributed as a package.
+searches:
+  - registry: npm
+    query: surescripts
+    url: https://registry.npmjs.org/-/v1/search?text=surescripts
+    total: 1
+    official_hits: 0
+    detail: >-
+      Only `surescripts-elements` (0.2.0, published 2015-09-16 by mdemr-systems) - a
+      third-party set of DOM selectors for the Surescripts portal, not a Surescripts product.
+  - registry: pypi
+    query: surescripts
+    url: https://pypi.org/pypi/surescripts/json
+    status: 404
+    official_hits: 0
+  - registry: github
+    query: org:surescripts
+    url: https://api.github.com/orgs/surescripts
+    status: 404
+    official_hits: 0
+    detail: No Surescripts GitHub organization exists, so no GitHubOrganization pointer is emitted.
+  - registry: github
+    query: surescripts (repository search)
+    url: https://api.github.com/search/repositories?q=surescripts
+    total: 17
+    official_hits: 0
+    detail: All results are third-party integrations and demos by unaffiliated accounts.
+  - registry: docs
+    query: Surescripts Developer Portal SDK / library / download pages
+    url: https://docs.surescripts.com/
+    official_hits: 0
+    detail: >-
+      No SDK, client library or code-sample download is offered on any public portal page.
+      The Development Tools section links only to hosted web applications.
+hosted_tooling:
+  - name: Workbench
+    url: https://sso.surescripts.net/account/login
+    staging_url: https://staging.sso.surescripts.net/account/login
+    kind: hosted web application
+  - name: Directory Manager (Staging)
+    url: https://staging.directory.surescripts.net/home
+    kind: hosted web application
+  - name: Message Search (Staging)
+    url: https://staging.support.surescripts.net/messages/home
+    kind: hosted web application
+  - name: Message Tester (Staging)
+    url: https://admin-staging.surescripts.net/erxmessagemanager/home
+    kind: hosted web application
+  - name: Certification Tester
+    url: https://surescripts.com/insights/ncpdp-upgrade-certification-tester
+    kind: hosted certification tool

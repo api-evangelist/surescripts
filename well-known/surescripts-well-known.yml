@@ -1,0 +1,88 @@
+generated: '2026-08-15'
+method: probed
+source: live GET of /.well-known/* on every Surescripts host named in apis.yml and in the developer portal
+note: >-
+  Every /.well-known/ path probed returned 404 on every host. surescripts.com and
+  www.surescripts.com answer 404 with the site's HTML 404 page; docs.surescripts.com
+  (the Archbee-hosted developer portal) answers 404 with its own SPA 404 shell. No
+  WellKnown or SecurityTxt pointer is emitted in apis.yml because no host serves a
+  real document at any of these paths - this file records a verified ABSENCE, not a
+  presence. The two markdown documents that ARE served (surescripts.com/llms.txt and
+  docs.surescripts.com/llms.txt) are captured separately in llms/.
+hosts:
+  - host: https://surescripts.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://www.surescripts.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://docs.surescripts.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+other_probes:
+  - url: https://surescripts.com/llms.txt
+    status: 200
+    content_type: text/markdown
+    note: Real llms.txt, saved verbatim to llms/surescripts-llms.txt
+  - url: https://docs.surescripts.com/llms.txt
+    status: 200
+    content_type: text/markdown
+    note: 61-byte stub emitted by the Archbee docs platform; only links back to the portal root
+  - url: https://surescripts.com/openapi.json
+    status: 404
+  - url: https://docs.surescripts.com/openapi.json
+    status: 200
+    note: HTTP 200 but the body is the Archbee "Not found" SPA shell (text/html), not a spec
+  - url: https://care-coordination.surescripts.net/ext/v1/metadata
+    status: null
+    note: >-
+      FHIR CapabilityStatement endpoint. TLS handshake succeeds and the certificate CN
+      is care-coordination.surescripts.net, issued by "Surescripts Issuing Certification
+      Authority" under "Surescripts Root Certification Authority" (a private CA, not a
+      public root). The server then resets the connection before returning any HTTP
+      response because no client certificate was presented - mutual TLS is required.

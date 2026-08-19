@@ -1,0 +1,165 @@
+generated: '2026-08-15'
+method: derived
+source: https://docs.surescripts.com/medhistory-populations/guide/messages-overview
+docs:
+  - https://docs.surescripts.com/medhistory-populations/guide/messages-overview
+  - https://docs.surescripts.com/medhistory-populations/guide/medication-history-for-population-response-fhir-resource-details
+  - https://docs.surescripts.com/medhistory-populations/guide/fhir-request-parameters
+  - https://docs.surescripts.com/formulary-download/guide/api-details
+note: >-
+  Derived from the published Surescripts object model and resource/field reference pages, not
+  from an OpenAPI - Surescripts publishes no machine-readable contract. Two independent models
+  are documented: the HL7 FHIR R4 graph returned by Medication History for Populations, and the
+  flat JSON objects returned by the Formulary Download API.
+models:
+  - name: Medication History for Populations (FHIR R4)
+    base_path: /ext/v1
+    root: Communication
+    note: >-
+      Panels and Prescription Notifications are retrieved by a FHIR search of the Communication
+      resource; the response is a Bundle. Prescription Notifications are constrained to a 1..1
+      relationship between Communication and MedicationDispense. The First Fill Not Picked Up
+      notification is the exception - its Communication is based on MedicationRequest, because
+      the medication was never dispensed.
+    entities:
+      - name: Bundle
+        role: response envelope
+        fields_of_note: [link]
+      - name: Communication
+        role: notification / panel entry
+      - name: Patient
+        role: subject
+      - name: Practitioner
+        role: prescriber
+      - name: Organization
+        role: pharmacy, PBM or payer
+      - name: MedicationRequest
+        role: prescription
+      - name: MedicationDispense
+        role: fill / dispense event
+      - name: Medication
+        role: drug
+      - name: Condition
+        role: diagnosis
+      - name: CapabilityStatement
+        role: server capability document (retrievable from the FHIR API)
+      - name: OperationOutcome
+        role: error detail
+    relationships:
+      - from: Bundle
+        to: Communication
+        type: has_many
+        via: entry
+      - from: Communication
+        to: MedicationDispense
+        type: has_one
+        via: based-on
+        cardinality: 1..1
+        note: Prescription Notifications; searchable as _include=Communication:based-on
+      - from: Communication
+        to: MedicationRequest
+        type: has_one
+        via: based-on
+        note: First Fill Not Picked Up notifications only
+      - from: MedicationDispense
+        to: MedicationRequest
+        type: belongs_to
+        via: prescription
+        note: searchable as _include=MedicationDispense.prescription
+      - from: MedicationDispense
+        to: Medication
+        type: belongs_to
+        via: medicationReference
+      - from: MedicationDispense
+        to: Organization
+        type: belongs_to
+        via: performer
+      - from: MedicationRequest
+        to: Practitioner
+        type: belongs_to
+        via: requester
+        note: searchable as _include:iterate=MedicationRequest:requester
+      - from: MedicationRequest
+        to: Patient
+        type: belongs_to
+        via: subject
+      - from: MedicationRequest
+        to: Medication
+        type: belongs_to
+        via: medicationReference
+      - from: Condition
+        to: Patient
+        type: belongs_to
+        via: subject
+        note: searchable as _revinclude=Condition:subject
+      - from: Communication
+        to: Patient
+        type: belongs_to
+        via: subject
+    identifiers:
+      style: UUID in the resource path
+      example_form: /ext/v1/MedicationDispense/{uuid}
+      note: >-
+        The guide includes a dedicated topic comparing UUIDs, GUIDs and OIDs, reflecting that
+        resource identity mixes FHIR logical ids with NCPDP/HL7 OID-namespaced identifiers.
+  - name: Formulary Download API
+    base_path: /formulary-download
+    note: Flat JSON objects, one level of nesting, plus a streamed file endpoint.
+    entities:
+      - name: PBM
+        fields:
+          - {name: pbmName, type: string}
+          - {name: pbmId, type: string, note: PBM Participant ID}
+          - {name: sourceVersions, type: array<integer>, enum: [30, 60]}
+          - {name: lastPublishedDate, type: string, format: date-time}
+      - name: ListType
+        fields:
+          - {name: name, type: string, note: enumerated list type}
+          - {name: subTypes, type: array<string>, note: v3.0 only}
+          - {name: version, type: integer, enum: [30, 60]}
+      - name: FormularyList
+        fields:
+          - {name: name, type: string}
+          - {name: pbmId, type: string}
+          - {name: listType, type: string}
+          - {name: subType, type: string, note: only populated for v3.0 coverage and copay list types}
+          - {name: size, type: integer}
+          - {name: lastPublishedDate, type: string, format: date-time}
+          - {name: lastDetailChangeDate, type: string, format: date-time}
+          - {name: effectiveDate, type: string, format: CCYYMMDD}
+          - {name: expirationDate, type: string, format: CCYYMMDD, nullable: true}
+          - {name: fileLink, type: string, format: uri}
+      - name: ListsPage
+        fields:
+          - {name: lists, type: array<FormularyList>}
+          - {name: totalPages, type: integer}
+          - {name: currentPage, type: integer}
+          - {name: pageSize, type: integer}
+      - name: FormularyFile
+        note: Streamed NCPDP Formulary & Benefit flat file (HDR / GHD / GTR / TRL records)
+      - name: Error
+        fields:
+          - {name: code, type: string, note: "<http-status>-<nn>"}
+          - {name: message, type: string}
+    relationships:
+      - from: PBM
+        to: FormularyList
+        type: has_many
+        via: pbmId
+      - from: ListType
+        to: FormularyList
+        type: has_many
+        via: listType
+      - from: FormularyList
+        to: FormularyFile
+        type: has_one
+        via: fileLink
+      - from: ListsPage
+        to: FormularyList
+        type: has_many
+        via: lists
+    enums:
+      list_types_v30: [ALT, CLS, CRS, COP, COV, FSL]
+      list_subtypes_v30: [DS, SL, AL, DE, GL, PA, QL, RD, RS, SM, ST, TM]
+      list_types_v60: [FS, DT, AT, AG, CS, PS, PE, AL, GL, PA, QL, SP, ST, SM, PC, PN, GM, ME]
+      versions: [30, 60]

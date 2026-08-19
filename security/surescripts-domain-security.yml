@@ -1,22 +1,22 @@
-generated: '2026-07-11'
+generated: '2026-08-15'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
 - host: surescripts.com
   https: true
   tls_version: TLSv1.3
-  cert_expires: Aug 18 21:51:27 2026 GMT
+  cert_expires: Oct 17 20:54:10 2026 GMT
   hsts: true
   hsts_max_age: 31536000
 domains:
 - domain: surescripts.com
   dnssec: true
   caa:
-  - 0 issue "godaddy.com"
   - 0 issue "akamai.com"
+  - 0 issue "godaddy.com"
+  - 0 issue "pki.goog"
   - 0 issue "letsencrypt.org"
   - 0 issue "digicert.com"
-  - 0 issue "pki.goog"
   spf: true
   dmarc: true
   dmarc_policy: none

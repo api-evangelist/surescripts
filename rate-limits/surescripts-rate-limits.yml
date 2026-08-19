@@ -1,0 +1,64 @@
+generated: '2026-08-15'
+method: searched
+source: https://docs.surescripts.com/medhistory-populations/guide/messages-overview
+docs:
+  - https://docs.surescripts.com/medhistory-populations/guide/messages-overview
+  - https://docs.surescripts.com/medhistory-populations/guide/fhir-request-parameters
+  - https://docs.surescripts.com/formulary-download/guide/api-details
+limit_count: 6
+response_headers: []
+status_on_exhaustion: null
+note: >-
+  Surescripts publishes call-frequency, window and page-size limits in prose in its companion
+  guides, but documents NO runtime rate-limit signal - there are no RateLimit-*, X-RateLimit-*
+  or Retry-After response headers and no documented 429 behaviour. An agent therefore cannot
+  discover its remaining budget from a response; the ceilings below have to be enforced by the
+  client. Values captured verbatim from the public Developer Portal pages.
+limits:
+  - api: Medication History for Populations FHIR API
+    scope: per-participant
+    kind: call-frequency
+    window: 2 hours
+    limit: 1
+    detail: >-
+      "The maximum retrieval frequency rate for running a search request should be every two
+      hours in the past." Prescription Notifications are themselves generated on a four-hour
+      continuous-monitoring cycle, so polling faster returns no new data.
+  - api: Medication History for Populations FHIR API
+    scope: per-request
+    kind: lookback-window
+    limit: 1 month
+    parameter: _lastUpdated
+    detail: >-
+      "The maximum allowable lookback period is one month from the requested date." Surescripts
+      recommends a smaller window (4 hours or 1 day) when generating panels or notifications.
+  - api: Medication History for Populations FHIR API
+    scope: per-request
+    kind: page-size
+    parameter: _count
+    default: 50
+    limit: 1000
+    detail: Size of the page containing matched MedicationDispense resources.
+  - api: Formulary Download API
+    scope: per-request
+    kind: page-size
+    parameter: pageSize
+    default: 10000
+    limit: null
+    detail: >-
+      No maximum is published. `page` is required; totalPages and currentPage are returned in
+      the response body.
+  - api: Formulary Download API
+    scope: per-participant
+    kind: recommended-cadence
+    detail: >-
+      Full Formulary Download weekly or on drug-database change; Delta File Download nightly.
+      Clients using non-rolled-up files should download and process after each drug-database
+      update.
+  - api: Medication History for Populations FHIR API
+    scope: per-participant
+    kind: duplicate-suppression
+    detail: >-
+      Not a throughput limit but the operational constraint that pairs with the polling window -
+      identical notifications will not repeat inside one bundle, but WILL repeat across bundles
+      when retrieval windows overlap, and de-duplication is the caller's responsibility.

@@ -1,0 +1,78 @@
+generated: '2026-08-15'
+method: searched
+source: https://docs.surescripts.com/eprescribing/home
+docs:
+  - https://docs.surescripts.com/eprescribing/home
+  - https://docs.surescripts.com/connectivity/home
+  - https://docs.surescripts.com/medhistory-populations/guide/integration-and-production
+note: >-
+  Surescripts runs a real staging environment, but it is NOT self-serve. There is no public
+  sandbox sign-up, no test API key and no downloadable test fixtures; access to staging is
+  granted by Surescripts as part of onboarding, and the same mutual-TLS client certificate
+  requirement applies. Everything below is published on the public pages of the Developer
+  Portal. No test values are invented here - the only test identifiers Surescripts publishes
+  publicly are the participant-ID examples in the header documentation.
+environments:
+  - name: staging
+    self_serve: false
+    description: >-
+      Design, develop and test a product integration before certification. Customers are given
+      access during the Integration phase; message validation testing covers message format,
+      application workflow and display against the Surescripts documentation.
+    consoles:
+      - name: Workbench (Staging)
+        url: https://staging.sso.surescripts.net/account/login
+        purpose: Get connected to the testing environment and key implementation tools
+      - name: Directory Manager (Staging)
+        url: https://staging.directory.surescripts.net/home
+        purpose: Manage your organization's data within the Surescripts Staging Directory
+      - name: Message Search (Staging)
+        url: https://staging.support.surescripts.net/messages/home
+        purpose: Search for, troubleshoot and review transactions
+      - name: Message Tester (Staging)
+        url: https://admin-staging.surescripts.net/erxmessagemanager/home
+        purpose: Test upgrade messages in real time for E-Prescribing
+      - name: Configuration / Certification (Staging)
+        url: https://staging.configuration.surescripts.net/certification/learning-resources
+        purpose: Certification learning resources
+      - name: Formulary Insights (Staging)
+        url: https://staging.configuration.surescripts.net/formulary-insights/home
+        purpose: Formulary data inspection
+  - name: production
+    self_serve: false
+    description: >-
+      Enabled only after certification testing completes and the contract is approved by the
+      Surescripts Certification Review Board, plus any applicable Identity Proofing,
+      attestations and DEA third-party audit for EPCS.
+    consoles:
+      - name: Workbench
+        url: https://sso.surescripts.net/account/login
+      - name: Case Management
+        url: https://community.surescripts.net/cases
+test_identifiers:
+  - kind: participant-id
+    pattern: T########## (leading T)
+    published_example: T00000000012345
+    field: X-SENDER-UID
+    detail: >-
+      Participant IDs beginning with T appear throughout the staging examples in the guides
+      (e.g. the Formulary Download list examples use pbmId values such as T00000000021633),
+      while production PBM identifiers in the same examples begin with D. This is Surescripts'
+      published convention, not a magic value a caller may use - a certificate and a configured
+      Participant ID are still required.
+    source: https://docs.surescripts.com/medhistory-populations/guide/http-request-headers
+test_tooling:
+  - name: Certification Tester
+    url: https://surescripts.com/insights/ncpdp-upgrade-certification-tester
+    description: Self-driving certification tool built by Surescripts to support NCPDP standards
+  - name: Pre-Onboarding Information
+    url: https://surescripts.highspot.com/viewer/1b2f4c5d87919557373e650973e0d191
+    description: Prerequisites and pre-onboarding information
+test_credentials:
+  api_keys: false
+  test_cards: false
+  time_simulation: false
+  fixtures_published: false
+  note: >-
+    Surescripts publishes worked request/response examples (FHIR bundles, formulary list
+    payloads, NCPDP message examples) in the guides, but no callable test credentials.

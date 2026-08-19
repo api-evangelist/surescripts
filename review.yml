@@ -1,5 +1,19 @@
 aid: surescripts
 name: Surescripts
+superseded_in_part:
+  date: '2026-08-15'
+  by: API Evangelist enrichment pass (local-v1)
+  note: >-
+    The 2026-07-04 review below concluded that Surescripts publishes no public API and no
+    developer portal. The WebSocket/AsyncAPI conclusion still holds - there is no server-push
+    surface. The broader "no public API of any kind" conclusion does NOT: Surescripts launched
+    a Developer Portal at https://docs.surescripts.com with an initial release dated 2026-08-06,
+    and two HTTP APIs are now publicly documented there - a Medication History for Populations
+    API implemented in HL7 FHIR R4 (GET /ext/v1/Communication on
+    care-coordination.surescripts.net) and a four-endpoint Formulary Download REST API on
+    formulary.surescripts.net. Both require a Surescripts-issued mutual-TLS client certificate
+    plus a Participant ID header, and neither has an OpenAPI. See apis.yml, plus the
+    authentication/, conventions/, errors/, data-model/, rate-limits/ and lifecycle/ artifacts.
 review:
   question: Does Surescripts expose a documented public WebSocket API?
   answer: false

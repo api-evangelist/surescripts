@@ -1,0 +1,35 @@
+generated: '2026-08-15'
+method: searched
+source: https://surescripts.com/
+plan_count: 0
+plans: []
+currency: null
+note: >-
+  Surescripts publishes no plans, tiers, rate card or price list anywhere on surescripts.com or
+  the Surescripts Developer Portal. Commercial terms are set per participant through a
+  negotiated contract that must be approved by the Surescripts Certification Review Board
+  before a production connection is configured, and the site routes every commercial question
+  to "Contact sales" or the assigned Account Manager. Several product behaviours are explicitly
+  contract-dependent - data deduplication and augmentation are offered in Basic and Premium
+  options "contact your account manager", the First Fill Not Picked Up notification "may need
+  additional contracting", and Eligibility has premium features - which confirms tiering exists
+  commercially while nothing about it is published. plan_count: 0 is therefore a measured
+  absence, not a missing check.
+access_model:
+  self_serve: false
+  free_tier: false
+  trial: false
+  public_signup: false
+  gate: contract + certification (Surescripts Certification Review Board)
+evidence:
+  - url: https://surescripts.com/who-we-are/contact-us
+    status: 200
+    detail: Contact-sales route; no pricing published
+  - url: https://docs.surescripts.com/
+    status: 200
+    detail: Developer Portal carries documentation only - no pricing, plans or sign-up
+  - url: https://docs.surescripts.com/medhistory-populations/guide/messages-overview
+    status: 200
+    detail: >-
+      "Surescripts offers two options for deduplication and augmentation: Basic and Premium.
+      For more information, contact your account manager."

@@ -1,0 +1,186 @@
+generated: '2026-08-15'
+method: searched
+source: https://docs.surescripts.com/
+docs:
+  - https://docs.surescripts.com/medhistory-populations/guide/http-request-headers
+  - https://docs.surescripts.com/medhistory-populations/guide/fhir-request-parameters
+  - https://docs.surescripts.com/medhistory-populations/guide/messages-overview
+  - https://docs.surescripts.com/formulary-download/guide/api-details
+  - https://docs.surescripts.com/medhistory-populations/guide/integration-and-production
+note: >-
+  Cross-cutting request/response semantics for the two Surescripts API surfaces that are
+  documented on the public pages of the Surescripts Developer Portal: the Medication History
+  for Populations FHIR R4 API and the Formulary Download REST API. Surescripts publishes no
+  OpenAPI, so everything here is read from the published guides. The NCPDP SCRIPT / X12 / RTPB
+  transaction surfaces are message-standard exchanges rather than REST and follow the NCPDP and
+  X12 conventions instead.
+authentication:
+  style: mutual-TLS client certificate + participant-ID header
+  detail: see authentication/surescripts-authentication.yml
+transport:
+  protocol: HTTPS
+  http_version_observed: h2
+  mutual_tls: true
+  private_root_ca: Surescripts Root Certification Authority
+content_types:
+  fhir_api:
+    default: application/json+fhir
+    accepted:
+      - application/json+fhir
+      - application/fhir+json
+      - application/json
+      - text/json
+    note: >-
+      Other content types are accepted on the request but the application only ever returns
+      content that maps to application/json+fhir.
+  formulary_download_api:
+    responses: application/json
+    file_endpoint: streamed text file (NCPDP Formulary & Benefit flat file)
+request_headers:
+  - name: X-SENDER-UID
+    surface: FHIR
+    requirement: mandatory
+    description: Participant ID, e.g. T00000000012345
+  - name: X-SENDER-UID-QUALIFIER
+    surface: FHIR
+    requirement: mandatory
+    description: Participant ID qualifier, fixed value 10
+  - name: X-Requester-ID
+    surface: FHIR
+    requirement: conditional
+    description: >-
+      Echoed back in the HTTP header of the FHIR response and identifies the Bundle ID -
+      this is the request-correlation mechanism on the FHIR surface.
+  - name: x-participant-id
+    surface: Formulary Download
+    requirement: required
+    description: Participant ID of the requester
+request_tracing:
+  header: X-Requester-ID
+  surface: FHIR
+  behavior: returned on the response and bound to the Bundle ID
+  note: No separate request-id / trace-id header is documented on the Formulary Download API.
+pagination:
+  fhir_api:
+    style: opaque-token
+    params:
+      - name: _page_token
+        requirement: conditional
+        description: >-
+          Page of results to retrieve; defaults to 1. Required when additional pages are
+          available. The next page's token is supplied in Bundle.link.
+      - name: _count
+        requirement: optional
+        default: 50
+        max: 1000
+        description: Page size for matched MedicationDispense resources
+    response_field: Bundle.link
+  formulary_download_api:
+    style: page-number
+    params:
+      - name: page
+        requirement: required
+        description: 1 is the first page
+      - name: pageSize
+        requirement: optional
+        default: 10000
+    response_fields:
+      - totalPages
+      - currentPage
+      - pageSize
+filtering:
+  fhir_api:
+    - name: _lastUpdated
+      description: >-
+        Bounds the search window with gt / lt prefixes. Format YYYY-MM-DDTHH:mm:ssZ in UTC.
+        Maximum lookback is one month from the requested date.
+    - name: _include
+      description: Include referenced resources; use _include:iterate beyond the first resource
+    - name: _revinclude
+      description: Reverse-reference lookup, e.g. _revinclude=Condition:subject
+    - name: '[parameter]:missing'
+      description: Filter results that do or do not carry a value, e.g. based-on:missing=false
+  formulary_download_api:
+    params:
+      - pbmId
+      - type
+      - subtype
+      - version
+      - publishedAfter
+      - detailChangeAfter
+    note: All parameters are case-sensitive and may be submitted in any order.
+idempotency:
+  key_header: null
+  supported: false
+  read_idempotent: true
+  note: >-
+    Surescripts documents NO idempotency-key contract on any surface, so no Idempotency
+    pointer is emitted in apis.yml. What it does document is that the FHIR search operation
+    is STATELESS - "requesting the same window multiple times will result in the same
+    response" - and that de-duplication of already-processed notifications is explicitly the
+    CALLER'S responsibility: identical notifications will not appear twice within one bundle,
+    but duplicates may occur across bundles depending on the retrieval window. That is
+    read-repeatability, not write idempotency.
+expansion:
+  supported: true
+  mechanism: FHIR _include / _revinclude / _include:iterate
+metadata:
+  supported: false
+versioning:
+  fhir_api:
+    scheme: uri-path
+    current: v1
+    base_path: /ext/v1
+    standard: HL7 FHIR Release 4 (R4), profiled against US Core
+  formulary_download_api:
+    scheme: payload-version-parameter
+    versions:
+      - '30'
+      - '60'
+    note: >-
+      version=30 is NCPDP Formulary & Benefit 3.0, version=60 is NCPDP F&B v60. Surescripts
+      up-translates 3.0 submissions to 60 and down-translates 60 submissions to 3.0, so both
+      representations are published regardless of what the PBM supplied. If the parameter is
+      omitted the response defaults to the client's configured preferred version.
+  message_standards:
+    - NCPDP SCRIPT 2023011
+    - NCPDP Real-Time Prescription Benefit v13
+    - NCPDP Formulary & Benefit 3.0 / v60
+    - X12 270/271 and 278
+    - HL7 FHIR R4
+error_envelope:
+  fhir_api:
+    shape: FHIR OperationOutcome inside a Bundle
+    note: Not RFC 9457. Validation messages surface in the OperationOutcome.
+  formulary_download_api:
+    shape: JSON object with code and message
+    example: '{"code": "400-01", "message": "Invalid version"}'
+    code_format: >-
+      HTTP status, a dash, then a 2-digit sub-code identifying the specific condition
+      (e.g. 403-03 = permission denied for the selected file).
+  detail: see errors/surescripts-problem-types.yml
+rate_limit_signaling:
+  response_headers: []
+  note: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After headers are documented. The published limits
+    are call-frequency and page-size guidance rather than a runtime signal - see
+    rate-limits/surescripts-rate-limits.yml.
+date_time:
+  format: xsd:dateTime, UTC
+  requirement: >-
+    UTC time must be synchronized with NIST and drift must be under one minute. Date-only
+    fields are sent in local time as CCYY-MM-DD and must not be converted to UTC.
+webhooks:
+  supported: false
+  note: >-
+    Prescription Notifications are near-real-time but are PULLED by the customer via FHIR
+    search (recommended no more often than every two hours), not pushed. No callback,
+    webhook or streaming endpoint is documented on any public portal page, which is why no
+    AsyncAPI or Webhooks artifact is emitted.
+cross_links:
+  authentication: authentication/surescripts-authentication.yml
+  errors: errors/surescripts-problem-types.yml
+  lifecycle: lifecycle/surescripts-lifecycle.yml
+  rate_limits: rate-limits/surescripts-rate-limits.yml
+  data_model: data-model/surescripts-data-model.yml
+  sandbox: sandbox/surescripts-sandbox.yml
