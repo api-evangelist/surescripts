@@ -3,6 +3,17 @@ url: https://raw.githubusercontent.com/api-evangelist/surescripts/refs/heads/mai
 name: Surescripts
 kind: company
 description: Surescripts operates the largest health information network in the United States, connecting prescribers, pharmacies, pharmacy benefit managers (PBMs), health plans, and health systems for e-prescribing, medication history, benefit and eligibility verification, electronic prior authorization, and clinical interoperability. Transaction services run over NCPDP SCRIPT (NewRx, RxRenewal, RxChange, RxTransfer, RxFill, CancelRx), NCPDP Real-Time Prescription Benefit, NCPDP Formulary and Benefit, X12 (270/271 eligibility, 278 prior authorization), the Direct Standard, and - since the Surescripts Developer Portal launched at docs.surescripts.com on 2026-08-06 - two publicly documented HTTP APIs - a Medication History for Populations API implemented in HL7 FHIR R4, and a four-endpoint Formulary Download REST API. Both authenticate the calling organization with a Surescripts-issued client certificate over mutual TLS plus a Participant ID header; Surescripts runs its own Certificate Authority. There is still no OpenAPI, no self-serve sign-up, no published pricing and no free API keys - production access requires Surescripts certification (conformance testing against current NCPDP standards, Certification Review Board contract approval, and a DEA third-party audit for EPCS) or integration through a certified middleware/EHR partner.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: unknown
