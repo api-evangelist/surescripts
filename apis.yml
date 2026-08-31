@@ -31,7 +31,7 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/surescripts.png
 tags:
   - Healthcare
-  - e-Prescribing
+  - E-Prescribing
   - Health Information Network
   - NCPDP SCRIPT
   - Medication History
@@ -126,7 +126,7 @@ apis:
   - aid: surescripts:surescripts-e-prescribing-api
     name: Surescripts E-Prescribing
     tags:
-      - e-Prescribing
+      - E-Prescribing
       - NCPDP SCRIPT
       - NewRx
       - CancelRx
@@ -182,7 +182,7 @@ apis:
     name: Surescripts Electronic Prior Authorization
     tags:
       - Prior Authorization
-      - EPA
+      - ePA
       - NCPDP SCRIPT
     tags_raw:
       - Prior Authorization
