@@ -149,6 +149,11 @@ apis:
     tags:
       - Eligibility
       - Formulary
+      - Benefits
+      - X12
+    tags_raw:
+      - Eligibility
+      - Formulary
       - Benefit
       - X12
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
